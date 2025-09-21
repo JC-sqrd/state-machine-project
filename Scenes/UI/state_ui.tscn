@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cp7lu8aidv4oj"]
+[gd_scene load_steps=4 format=3 uid="uid://cp7lu8aidv4oj"]
 
 [ext_resource type="Script" uid="uid://c0rxgfmn7viir" path="res://Scripts/UI/StateUI.gd" id="1_rdy6t"]
-[ext_resource type="PackedScene" uid="uid://c28b7ohptrmqh" path="res://Scenes/UI/transition_socket.tscn" id="2_rdy6t"]
+[ext_resource type="PackedScene" uid="uid://cywwsxw1tlktv" path="res://Scenes/UI/in_transition_socket_ui.tscn" id="2_e6m74"]
+[ext_resource type="PackedScene" uid="uid://c28b7ohptrmqh" path="res://Scenes/UI/out_transition_socket.tscn" id="2_rdy6t"]
 
 [node name="StateUI" type="PanelContainer"]
 custom_minimum_size = Vector2(120, 80)
@@ -22,6 +23,16 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 mouse_filter = 2
 
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="InTransitionSocket" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("2_e6m74")]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="TextEdit" type="TextEdit" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
@@ -36,6 +47,6 @@ size_flags_horizontal = 6
 size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="TransitionSocket" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_rdy6t")]
+[node name="OutTransitionSocket" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_rdy6t")]
 unique_name_in_owner = true
 layout_mode = 2

@@ -24,6 +24,10 @@ func transition(input : String, input_index : int) -> Array[State]:
 		pass
 	return transition_states
 
+func add_transition(state_transition : StateTransition):
+	transitions.append(state_transition)
+	pass
+
 func enter_state(input : String, input_index : int):
 	
 	pass
