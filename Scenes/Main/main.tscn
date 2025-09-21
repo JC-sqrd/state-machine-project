@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=3 uid="uid://dx3s65yrwk8tm"]
+
+[ext_resource type="PackedScene" uid="uid://cp7lu8aidv4oj" path="res://Scenes/UI/state_ui.tscn" id="1_1r6ip"]
+[ext_resource type="Script" uid="uid://c14nwibidfv4t" path="res://Scripts/UI/MainUI.gd" id="1_lixft"]
+[ext_resource type="Script" uid="uid://dpdpoysxeqbs8" path="res://Scripts/FiniteStateMachine.gd" id="3_p6jpk"]
+[ext_resource type="Script" uid="uid://cefs4lydgwygr" path="res://Scripts/State.gd" id="3_qw60k"]
+[ext_resource type="Script" uid="uid://dh3v133ffefvl" path="res://Scripts/StateTransition.gd" id="4_5yls4"]
+
+[node name="Node2D" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_lixft")
+
+[node name="StateUi" parent="." instance=ExtResource("1_1r6ip")]
+layout_mode = 1
+offset_left = 473.0
+offset_top = 270.0
+offset_right = 637.0
+offset_bottom = 350.0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="StateLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "CURRENT STATE"
+
+[node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "final_states")]
+script = ExtResource("3_p6jpk")
+initial_state = NodePath("Q0")
+final_states = [NodePath("Q2")]
+input_string = "aab"
+metadata/_custom_type_script = "uid://dpdpoysxeqbs8"
+
+[node name="Q0" type="Node" parent="FiniteStateMachine"]
+script = ExtResource("3_qw60k")
+metadata/_custom_type_script = "uid://cefs4lydgwygr"
+
+[node name="StateTransition" type="Node" parent="FiniteStateMachine/Q0" node_paths=PackedStringArray("transition_to")]
+script = ExtResource("4_5yls4")
+transition_string = "a"
+transition_to = NodePath("../../Q1")
+metadata/_custom_type_script = "uid://dh3v133ffefvl"
+
+[node name="Q1" type="Node" parent="FiniteStateMachine"]
+script = ExtResource("3_qw60k")
+metadata/_custom_type_script = "uid://cefs4lydgwygr"
+
+[node name="StateTransition" type="Node" parent="FiniteStateMachine/Q1" node_paths=PackedStringArray("transition_to")]
+script = ExtResource("4_5yls4")
+transition_string = "a"
+transition_to = NodePath("../../Q2")
+metadata/_custom_type_script = "uid://dh3v133ffefvl"
+
+[node name="Q2" type="Node" parent="FiniteStateMachine"]
+script = ExtResource("3_qw60k")
+metadata/_custom_type_script = "uid://cefs4lydgwygr"

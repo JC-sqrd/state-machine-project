@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://cp7lu8aidv4oj"]
+
+[ext_resource type="Script" uid="uid://c0rxgfmn7viir" path="res://Scripts/UI/StateUI.gd" id="1_rdy6t"]
+[ext_resource type="PackedScene" uid="uid://c28b7ohptrmqh" path="res://Scenes/UI/transition_socket.tscn" id="2_rdy6t"]
+
+[node name="StateUI" type="PanelContainer"]
+custom_minimum_size = Vector2(120, 80)
+offset_right = 88.0
+offset_bottom = 40.0
+mouse_filter = 1
+script = ExtResource("1_rdy6t")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 1
+text = "STATE"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="TransitionSocket" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_rdy6t")]
+unique_name_in_owner = true
+layout_mode = 2
