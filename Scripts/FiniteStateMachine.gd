@@ -11,6 +11,9 @@ var input_index : int = 0
 
 var states : Array[State]
 
+func _init() -> void:
+	name = "FiniteStateMachine"
+
 func _ready() -> void:
 	for child in get_children():
 		if child is State:

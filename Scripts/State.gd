@@ -3,6 +3,9 @@ extends Node
 
 var transitions : Array[StateTransition]
 
+func _init() -> void:
+	name = "State"
+
 func _ready() -> void:
 	for child in get_children():
 		if child is StateTransition:

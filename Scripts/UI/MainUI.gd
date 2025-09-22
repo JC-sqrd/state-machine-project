@@ -3,16 +3,22 @@ extends Control
 
 enum UI_State {NEUTRAL, MOVE_STATE, SELECT_STATE_TO_TRANSITION}
 
+@export var finite_state_machine : FiniteStateMachine
+
 var state_uis : Array[StateUI]
+@onready var start_machine_button: Button = %StartMachineButton
 @onready var state_label: Label = %StateLabel
 var current_ui_state : UI_State = UI_State.NEUTRAL : set = _set_current_ui_state
 var selected_transition_socket : OutTransitionSocketUI
+var draw_transition_line_preview : bool = false
 
 var left_mouse_button_held : bool = false
 
-const STATE_TRANSITION = preload("res://Scenes/UI/state_transition.tscn")
+const STATE_TRANSITION_UI = preload("res://Scenes/UI/state_transition_ui.tscn")
 
 func _ready() -> void:
+	#finite_state_machine = FiniteStateMachine.new()
+	#add_child(finite_state_machine, true)
 	for child in get_children():
 		if child is StateUI:
 			child.mouse_hovered.connect(_on_state_ui_hovered)
@@ -21,6 +27,7 @@ func _ready() -> void:
 			child.out_transition_socket.mouse_unhovered.connect(_on_transition_socket_unhovered)
 			child.out_transition_socket.pressed.connect(_on_transition_socket_pressed)
 			state_uis.append(child)
+			#finite_state_machine.states.append(child)
 			pass
 	pass
 
@@ -28,6 +35,8 @@ func _ready() -> void:
 	#print("INPUT EVENT: " + str(event))
 
 func _process(delta: float) -> void:
+	if draw_transition_line_preview:
+		queue_redraw()
 	if left_mouse_button_held:
 		var hovered : Control = get_viewport().gui_get_hovered_control()
 		if hovered != null and hovered is StateUI:
@@ -45,6 +54,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if hovered != null and hovered is OutTransitionSocketUI and current_ui_state != UI_State.SELECT_STATE_TO_TRANSITION:
 				current_ui_state = UI_State.SELECT_STATE_TO_TRANSITION
 				selected_transition_socket = hovered
+				draw_transition_line_preview = true
 				print("Hovered control: " + hovered.name)
 				return
 			elif hovered != null and hovered is InTransitionSocketUI and current_ui_state == UI_State.SELECT_STATE_TO_TRANSITION:
@@ -53,7 +63,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if selected_transition_socket != null:
 					#Set transition to state
 					var state_transition : StateTransition = selected_transition_socket.create_transition_to_state(hovered.state_ui.state)
-					var state_transition_ui : StateTransitionUI = STATE_TRANSITION.instantiate() as StateTransitionUI
+					var state_transition_ui : StateTransitionUI = STATE_TRANSITION_UI.instantiate() as StateTransitionUI
 					state_transition_ui.state_transition = state_transition
 					state_transition_ui.from = selected_transition_socket.state_ui
 					state_transition_ui.to = hovered.state_ui
@@ -62,6 +72,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					
 					selected_transition_socket.state_ui.state.add_transition(state_transition)
 					selected_transition_socket.state_ui.state.add_child(state_transition)
+					draw_transition_line_preview = false
 					print("SUCESSFULLY SET TRANSITION")
 					pass
 				print("Hovered control: " + hovered.name)
@@ -70,8 +81,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				print("Hovered control: " + hovered.name)
 				pass
 			current_ui_state = UI_State.NEUTRAL
+			draw_transition_line_preview = false
+			queue_redraw()
 			print("LEFT MOUSE BUTTON PRESSED")
 			pass
+		elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+				print("RIGHT MOUSE BUTTON PRESSED")
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			left_mouse_button_held = false
 		pass
@@ -109,4 +124,10 @@ func _state_label_debug(current_ui_state : UI_State, label : Label):
 		label.text = "MOVE STATE POSITION"
 	elif current_ui_state == UI_State.SELECT_STATE_TO_TRANSITION:
 		label.text = "SELECT STATE TO TRANSITION"
+	pass
+
+
+func _draw():
+	if draw_transition_line_preview:
+		draw_line(selected_transition_socket.global_position + selected_transition_socket.size / 2, get_global_mouse_position(), Color.GREEN, 4, true)
 	pass

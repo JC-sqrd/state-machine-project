@@ -16,19 +16,59 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_lixft")
 
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -288.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer2/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+placeholder_text = "Input String"
+
+[node name="StartMachineButton" type="Button" parent="MarginContainer2/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "START MACHINE"
+
 [node name="StateUi" parent="." instance=ExtResource("1_1r6ip")]
 layout_mode = 1
-offset_left = 473.0
-offset_top = 270.0
-offset_right = 637.0
-offset_bottom = 350.0
+offset_left = 265.0
+offset_top = 229.0
+offset_right = 473.0
+offset_bottom = 309.0
 
 [node name="StateUi2" parent="." instance=ExtResource("1_1r6ip")]
 layout_mode = 1
-offset_left = 731.0
-offset_top = 289.0
-offset_right = 895.0
-offset_bottom = 369.0
+offset_left = 532.0
+offset_top = 255.0
+offset_right = 740.0
+offset_bottom = 335.0
+
+[node name="StateUi3" parent="." instance=ExtResource("1_1r6ip")]
+layout_mode = 1
+offset_left = 777.0
+offset_top = 336.0
+offset_right = 985.0
+offset_bottom = 416.0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
@@ -47,31 +87,37 @@ text = "CURRENT STATE"
 
 [node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "final_states")]
 script = ExtResource("3_p6jpk")
-initial_state = NodePath("Q0")
-final_states = [NodePath("Q2")]
-input_string = "a"
+initial_state = NodePath("q0")
+final_states = [NodePath("q2")]
+input_string = "aa"
 metadata/_custom_type_script = "uid://dpdpoysxeqbs8"
 
-[node name="Q0" type="Node" parent="FiniteStateMachine"]
+[node name="q0" type="Node" parent="FiniteStateMachine"]
 script = ExtResource("3_qw60k")
 metadata/_custom_type_script = "uid://cefs4lydgwygr"
 
-[node name="StateTransition" type="Node" parent="FiniteStateMachine/Q0" node_paths=PackedStringArray("transition_to")]
+[node name="->q1" type="Node" parent="FiniteStateMachine/q0" node_paths=PackedStringArray("transition_to")]
 script = ExtResource("4_5yls4")
 transition_string = "a"
-transition_to = NodePath("../../Q1")
+transition_to = NodePath("../../q1")
 metadata/_custom_type_script = "uid://dh3v133ffefvl"
 
-[node name="Q1" type="Node" parent="FiniteStateMachine"]
+[node name="->q2" type="Node" parent="FiniteStateMachine/q0" node_paths=PackedStringArray("transition_to")]
+script = ExtResource("4_5yls4")
+transition_string = "a"
+transition_to = NodePath("../../q2")
+metadata/_custom_type_script = "uid://dh3v133ffefvl"
+
+[node name="q1" type="Node" parent="FiniteStateMachine"]
 script = ExtResource("3_qw60k")
 metadata/_custom_type_script = "uid://cefs4lydgwygr"
 
-[node name="StateTransition" type="Node" parent="FiniteStateMachine/Q1" node_paths=PackedStringArray("transition_to")]
+[node name="->q2" type="Node" parent="FiniteStateMachine/q1" node_paths=PackedStringArray("transition_to")]
 script = ExtResource("4_5yls4")
 transition_string = "a"
-transition_to = NodePath("../../Q2")
+transition_to = NodePath("../../q2")
 metadata/_custom_type_script = "uid://dh3v133ffefvl"
 
-[node name="Q2" type="Node" parent="FiniteStateMachine"]
+[node name="q2" type="Node" parent="FiniteStateMachine"]
 script = ExtResource("3_qw60k")
 metadata/_custom_type_script = "uid://cefs4lydgwygr"
